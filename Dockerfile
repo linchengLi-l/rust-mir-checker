@@ -53,6 +53,7 @@ RUN set -eux \
     && apt-get -y update  \
     && apt-get -y install --no-install-recommends \ 
     build-essential \
+    m4 \
     libgmp-dev \
     libmpfr-dev \
     libppl-dev \
@@ -64,7 +65,7 @@ RUN set -eux \
     && rustup component add rustc-dev llvm-tools-preview \
     && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.6/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz \
     && mkdir -p /opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04 \
-    && tar xvf clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz -C /opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04 \
+    && tar xvf clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz -C /opt/ \
     && rm -rfv clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz \
     && apt-get -y --purge autoremove \
     && apt-get -y clean \
