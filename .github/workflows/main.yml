@@ -102,7 +102,7 @@ jobs:
           # platforms: linux/386,linux/amd64,linux/arm/v5,linux/arm/v7,linux/arm64,linux/mips64le,linux/ppc64le,linux/s390x
           platforms: linux/amd64 
           push: false
-          load: false
+          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           # annotations: ${{ steps.meta.outputs.annotations }}
@@ -110,4 +110,4 @@ jobs:
           cache-to: type=gha,mode=max
       - name: Test
         run: |
-          # docker run --rm snowdreamtechtest/rust-mir-checker:latest cd /root/rust-mir-checker && RUST_TEST_THREADS=1 cargo test --verbose
+          docker run --rm snowdreamtechtest/rust-mir-checker:latest cd /root/rust-mir-checker && RUST_TEST_THREADS=1 cargo test --verbose
