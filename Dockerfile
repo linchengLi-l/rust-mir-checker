@@ -23,8 +23,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
 WORKDIR /root
 
 RUN set -eux \
-    && apt-get -qqy update  \
-    && apt-get -qqy install --no-install-recommends \ 
+    && apt-get -y update  \
+    && apt-get -y install --no-install-recommends \ 
     procps \
     sudo \
     vim \ 
@@ -40,16 +40,18 @@ RUN set -eux \
     apt-transport-https \
     ca-certificates \                                                                                                                                                                                                      
     && update-ca-certificates\
-    && apt-get -qqy --purge autoremove \
-    && apt-get -qqy clean \
+    && apt-get -y --purge autoremove \
+    && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/* \
     && echo 'export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"' >> /etc/bash.bashrc 
 
 RUN set -eux \
-    && apt-get -qqy update  \
-    && apt-get -qqy install --no-install-recommends \ 
+    && sudo sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list \
+    && sudo sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list \
+    && apt-get -y update  \
+    && apt-get -y install --no-install-recommends \ 
     build-essential \
     libgmp-dev \
     libmpfr-dev \
@@ -64,8 +66,8 @@ RUN set -eux \
     && mkdir -p /opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04 \
     && tar xvf clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz -C /opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04 \
     && rm -rfv clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz \
-    && apt-get -qqy --purge autoremove \
-    && apt-get -qqy clean \
+    && apt-get -y --purge autoremove \
+    && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/* 
