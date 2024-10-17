@@ -47,7 +47,7 @@ RUN set -eux \
     && rm -rf /var/tmp/* \
     && echo 'export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"' >> /etc/bash.bashrc 
 
-    RUN set -eux \
+RUN set -eux \
     && apt-get -qqy update  \
     && apt-get -qqy install --no-install-recommends \ 
     build-essential \
