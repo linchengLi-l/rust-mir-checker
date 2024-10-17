@@ -1,6 +1,13 @@
 #!/bin/sh
 set -e
 
+# install
+cd /root/rust-mir-checker
+export LIBCLANG_PATH=/opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04/lib/libclang.so
+export PATH=/opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04/bin:$PATH
+export RUSTFLAGS="-Clink-args=-fuse-ld=lld"
+cargo build --verbose
+
 # exec commands
 if [ -n "$*" ]; then
     sh -c "$*"

@@ -32,6 +32,9 @@ on:
       - "pr/**"
   workflow_dispatch:
 
+env:
+  CARGO_TERM_COLOR: always
+
 jobs:
   buildx:
     runs-on: ubuntu-latest
@@ -66,8 +69,8 @@ jobs:
         uses: docker/metadata-action@v5.5.1
         with:
           images: |
-            name=snowdreamtechtest/ubuntu,enable=true
-            name=ghcr.io/snowdreamtechtest/ubuntu,enable=true
+            name=snowdreamtechtest/rust-mir-checker,enable=true
+            name=ghcr.io/snowdreamtechtest/rust-mir-checker,enable=true
           flavor: |
             latest=false  
             prefix=
@@ -96,10 +99,15 @@ jobs:
             BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
             VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
             REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
-          platforms: linux/amd64,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x
+          # platforms: linux/386,linux/amd64,linux/arm/v5,linux/arm/v7,linux/arm64,linux/mips64le,linux/ppc64le,linux/s390x
+          platforms: linux/amd64 
           push: false
+          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          annotations: ${{ steps.meta.outputs.annotations }}
+          # annotations: ${{ steps.meta.outputs.annotations }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Test
+        run: |
+          docker run --rm snowdreamtechtest/rust-mir-checker:latest cd /root/rust-mir-checker && RUST_TEST_THREADS=1 cargo test --verbose

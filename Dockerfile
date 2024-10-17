@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:18.06
 
 # OCI annotations to image
 LABEL org.opencontainers.image.authors="Snowdream Tech" \
@@ -17,7 +17,10 @@ ENV DEBIAN_FRONTEND=noninteractive \
     KEEPALIVE=0 \
     # Ensure the container exec commands handle range of utf8 characters based of
     # default locales in base image (https://github.com/docker-library/docs/tree/master/ubuntu#locales)
-    LANG=C.UTF-8 
+    LANG=C.UTF-8 \
+    CARGO_TERM_COLOR=always
+
+WORKDIR /root
 
 RUN set -eux \
     && apt-get -qqy update  \
@@ -32,6 +35,7 @@ RUN set -eux \
     curl \
     iputils-ping \
     lsof \
+    git \
     apt-transport-https \
     ca-certificates \                                                                                                                                                                                                      
     && update-ca-certificates\
@@ -41,6 +45,25 @@ RUN set -eux \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/* \
     && echo 'export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"' >> /etc/bash.bashrc 
+
+    RUN set -eux \
+    && apt-get -qqy update  \
+    && apt-get -qqy install --no-install-recommends \ 
+    libgmp-dev \
+    libmpfr-dev \
+    libppl-dev \
+    libz3-dev \
+    && git clone --recursive https://github.com/lizhuohua/rust-mir-checker.git \
+    && cd rust-mir-checker \
+    && rustup component add rustc-dev llvm-tools-preview \
+    && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.6/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz \
+    && tar xvf clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz -C /opt \
+    && apt-get -qqy --purge autoremove \
+    && apt-get -qqy clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/* 
+
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
