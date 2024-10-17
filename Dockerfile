@@ -53,6 +53,8 @@ RUN set -eux \
     libmpfr-dev \
     libppl-dev \
     libz3-dev \
+    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+    && . "$HOME/.cargo/env" \
     && git clone --recursive https://github.com/lizhuohua/rust-mir-checker.git \
     && cd rust-mir-checker \
     && rustup component add rustc-dev llvm-tools-preview \
