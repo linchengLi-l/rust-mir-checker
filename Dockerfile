@@ -23,6 +23,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
 WORKDIR /root
 
 RUN set -eux \
+    && sudo sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list \
+    && sudo sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list \
     && apt-get -y update  \
     && apt-get -y install --no-install-recommends \ 
     procps \
@@ -48,8 +50,6 @@ RUN set -eux \
     && echo 'export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"' >> /etc/bash.bashrc 
 
 RUN set -eux \
-    && sudo sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list \
-    && sudo sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list \
     && apt-get -y update  \
     && apt-get -y install --no-install-recommends \ 
     build-essential \
