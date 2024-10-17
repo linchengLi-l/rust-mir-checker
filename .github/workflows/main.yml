@@ -110,4 +110,4 @@ jobs:
           cache-to: type=gha,mode=max
       - name: Test
         run: |
-          docker run --rm snowdreamtechtest/rust-mir-checker:latest cd /root/rust-mir-checker && RUST_TEST_THREADS=1 cargo test --verbose
+          docker run --rm snowdreamtechtest/rust-mir-checker:latest
