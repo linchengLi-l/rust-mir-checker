@@ -29,6 +29,7 @@ RUN set -eux \
     sudo \
     vim \ 
     unzip \
+    xz-utils \
     tzdata \
     openssl \
     wget \
@@ -59,7 +60,9 @@ RUN set -eux \
     && cd rust-mir-checker \
     && rustup component add rustc-dev llvm-tools-preview \
     && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.6/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz \
-    && tar xvf clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz -C /opt \
+    && mkdir -p /opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04 \
+    && tar xvf clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz -C /opt/clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04 \
+    && rm -rfv clang+llvm-15.0.6-x86_64-linux-gnu-ubuntu-18.04.tar.xz \
     && apt-get -qqy --purge autoremove \
     && apt-get -qqy clean \
     && rm -rf /var/lib/apt/lists/* \
