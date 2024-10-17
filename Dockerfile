@@ -50,6 +50,7 @@ RUN set -eux \
     RUN set -eux \
     && apt-get -qqy update  \
     && apt-get -qqy install --no-install-recommends \ 
+    build-essential \
     libgmp-dev \
     libmpfr-dev \
     libppl-dev \
